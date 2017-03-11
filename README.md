@@ -1,4 +1,5 @@
 # FullStackWebDevelopmentProjects
 This repository contains full stack web development projects.
 
-Tools and Technologies: HTML, CSS, JavaScript, Bootstrap, jQuery, Node.js
+Environment: HTML, CSS, JavaScript, Bootstrap, jQuery, Node.js
+Tools: Cloud9, Atom
