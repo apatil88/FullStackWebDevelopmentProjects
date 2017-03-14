@@ -5,6 +5,6 @@ This repository contains full stack web development projects.
 
 Simple blog app architected using RESTful routes
 
-**Environment:** HTML, CSS, JavaScript, Bootstrap, jQuery, Embedded JavaScript, Express.js, Node.js, REST, Mongoose, MongoDB
+**Environment:** HTML, CSS, JavaScript, Bootstrap, Semantic UI, jQuery, Embedded JavaScript, Express.js, Node.js, REST, Mongoose, MongoDB
 
 **Tools:** Cloud9
