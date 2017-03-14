@@ -25,11 +25,11 @@ app.get("/", function(req, res){
     res.redirect("/blogs");
 });
 
-Blog.create({
+/*Blog.create({
     title: "Blog",
     image: "https://farm4.staticflickr.com/3273/2602356334_20fbb23543.jpg",
     body: "Amazing!"
-});
+});*/
 
 //INDEX route  : GET
 app.get("/blogs", function(req, res){
@@ -42,6 +42,21 @@ app.get("/blogs", function(req, res){
    });
 });
 
+//NEW Route : GET
+app.get("/blogs/new", function(req, res){
+    res.render("new");    
+});
+
+//CREATE Route : POST
+app.post("/blogs", function(req, res){
+   Blog.create(req.body.blog, function(err, newBlog){
+        if(err){
+            res.render("new");
+        } else {
+            res.redirect("/blogs");
+        }
+   });
+});
 
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("RESTfulBlogApp started on port " + process.env.PORT); 
