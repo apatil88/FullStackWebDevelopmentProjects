@@ -1,7 +1,7 @@
 # FullStackWebDevelopmentProjects
 This repository contains full stack web development projects.
 
-** RESTfulBlogApp **
+**RESTfulBlogApp**
 
 Simple blog app architected using RESTful routes
 
