@@ -1,26 +1,54 @@
-var express = require("express");
-var app = express();
-
-var bodyParser = require("body-parser");
+var express     = require("express"),
+    app         = express(),
+    bodyParser  = require("body-parser"),
+    mongoose    = require("mongoose");
+    
+//Connect to MongoDB database
+mongoose.connect("mongodb://localhost/yelp_camp");
 
 app.use(bodyParser.urlencoded({extended : true}));
 
 app.set("view engine", "ejs");
 
-//TODO : Move to MongoDB database
-var campgrounds = [
-       {name : "Beach camping", image: "https://farm4.staticflickr.com/3872/14435096036_39db8f04bc.jpg"},
-       {name : "Wye Valley Camping", image: "https://farm8.staticflickr.com/7042/7121867321_65b5f46ef1.jpg"},
-       {name : "Camp", image: "https://farm2.staticflickr.com/1363/1342367857_2fd12531e7.jpg"}
-       
-       ]; 
+
+//CAMPGROUND SCHEMA SETUP
+var campgroundSchema = new mongoose.Schema({
+   name : String,
+   image : String
+});
+
+//Compile to model
+var Campground = mongoose.model("Campground", campgroundSchema);
+
+//Create and save new campground to database
+/*Campground.create({
+        name : "Wye Valley Camping", 
+        image: "https://farm8.staticflickr.com/7042/7121867321_65b5f46ef1.jpg"
+}, function(err, campgrounds){
+    if(err){
+        console.log(err);
+    } else {
+        console.log("New Campground created in DB");
+        console.log(campgrounds);
+    }
+});*/
+
 
 app.get("/",  function(req, res){
     res.render("landing");
 });
 
 app.get("/campgrounds", function(req, res){
-       res.render("campgrounds", {campgrounds : campgrounds});
+      
+       //Get all campgrounds from database
+       Campground.find({}, function(err, allCampgrounds){
+          if(err){
+              console.log(err);
+          } else {
+              res.render("campgrounds", {campgrounds : allCampgrounds});  //Retrieves all campgrounds from DB and renders it on campgrounds page
+          }
+       });
+       
 });
 
 //Extract name and image from the POST request sent from the form
@@ -29,10 +57,19 @@ app.post("/campgrounds", function(req, res){
     var name = req.body.name;
     var image = req.body.image;
     var newCampground = {name : name, image : image};
-    campgrounds.push(newCampground);
     
-    //redirect to campgrounds page
-    res.redirect("/campgrounds");  //Default redirect : GET
+    //Create and save the new campground submitted by the user to the DB
+    Campground.create(newCampground, function(err, newlyCreated){
+       if(err){
+           console.log(err);
+       } else {
+            //redirect to campgrounds page
+            res.redirect("/campgrounds");  //Default redirect : GET
+       }
+    });
+
+    
+   
 });
 
 //Renders a form to create a new campground
