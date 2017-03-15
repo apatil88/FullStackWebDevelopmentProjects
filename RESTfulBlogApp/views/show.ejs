@@ -1,0 +1,16 @@
+<% include ./partials/header %>
+
+<div class="ui main text container segment">
+    <div class="ui huge header"><%= blog.title %></div>
+    <div class="ui top attached">
+        <img class="ui centered rounded image" src="<%= blog.image %>"><br/>
+        <div class="content">
+            <span> <%= moment(blog.created).format('MMMM Do YYYY, h:mm:ss a') %> </span>
+        </div>
+        <div class="description">
+            <p> <%- blog.body %> </p>
+        </div>
+    </div>
+</div>
+
+<% include ./partials/footer %>
