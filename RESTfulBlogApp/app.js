@@ -30,12 +30,6 @@ app.get("/", function(req, res){
     res.redirect("/blogs");
 });
 
-/*Blog.create({
-    title: "Blog",
-    image: "https://farm4.staticflickr.com/3273/2602356334_20fbb23543.jpg",
-    body: "Amazing!"
-});*/
-
 //INDEX route  : GET
 app.get("/blogs", function(req, res){
    Blog.find({}, function(err, blogs){
