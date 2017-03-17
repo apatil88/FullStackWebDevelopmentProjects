@@ -5,11 +5,16 @@
     <div class="ui top attached">
         <img class="ui centered rounded image" src="<%= blog.image %>"><br/>
         <div class="content">
-            <span> <%= moment(blog.created).format('MMMM Do YYYY, h:mm:ss a') %> </span>
+            <span> <%= //moment(blog.created).format('MMMM Do YYYY, h:mm:ss a') %> </span>
+            <span> <%= blog.created.toDateString() %> </span>
         </div>
         <div class="description">
             <p> <%- blog.body %> </p>
         </div>
+        <a class="ui blue basic button" href="/blogs/<%= blog._id %>/edit">Edit Blog</a>
+        <form id="delete" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+            <button class="ui red basic button">Delete Blog</button>
+        </form>
     </div>
 </div>
 
