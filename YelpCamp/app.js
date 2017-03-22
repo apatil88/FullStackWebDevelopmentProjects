@@ -1,7 +1,13 @@
 var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
-    mongoose    = require("mongoose");
+    mongoose    = require("mongoose"),
+    Campground  = require("./models/campground.js"),
+    seedDB      = require("./seeds");
+    
+    
+//Everytime this file runs, seed the database
+seedDB();
     
 //Connect to MongoDB database
 mongoose.connect("mongodb://localhost/yelp_camp");
@@ -9,32 +15,6 @@ mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({extended : true}));
 
 app.set("view engine", "ejs");
-
-
-//CAMPGROUND SCHEMA SETUP
-var campgroundSchema = new mongoose.Schema({
-   name : String,
-   image : String,
-   description : String
-});
-
-//Compile to model
-var Campground = mongoose.model("Campground", campgroundSchema);
-
-//Create and save new campground to database
-// Campground.create({
-//         name : "Wye Valley Camping", 
-//         image: "https://farm8.staticflickr.com/7042/7121867321_65b5f46ef1.jpg",
-//         description : "This is a great valley! Love to be here again!"
-// }, function(err, campgrounds){
-//     if(err){
-//         console.log(err);
-//     } else {
-//         console.log("New Campground created in DB");
-//         console.log(campgrounds);
-//     }
-// });
-
 
 app.get("/",  function(req, res){
     res.render("landing");
@@ -48,7 +28,7 @@ app.get("/campgrounds", function(req, res){
           if(err){
               console.log(err);
           } else {
-              res.render("index", {campgrounds : allCampgrounds});  //Retrieves all campgrounds from DB and renders it on campgrounds page
+              res.render("campgrounds/index", {campgrounds : allCampgrounds});  //Retrieves all campgrounds from DB and renders it on campgrounds page
           }
        });
        
@@ -83,15 +63,32 @@ app.get("/campgrounds/new", function(req, res){
 //SHOW - Shows more info about one campground
 app.get("/campgrounds/:id", function(req, res){
     //find campground with provided ID
-    Campground.findById(req.params.id, function(err, foundCampground){
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
        if(err){
            console.log(err);
        } else {
+           console.log(foundCampground);
            //render show template with that campground
-            res.render('show', {campground : foundCampground});
+            res.render('campgrounds/show', {campground : foundCampground});
        }
     });
       
+});
+
+//==================
+// COMMENTS ROUTES
+//==================
+//Nested Route
+app.get("/campgrounds/:id/comments/new", function(req, res){
+    //Find campground by id
+    Campground.findById(req.params.id, function(err, campground){
+       if(err){
+           console.log(err);
+       } else {
+            res.render("comments/new", {campground : campground});
+       }
+    });
+  
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
