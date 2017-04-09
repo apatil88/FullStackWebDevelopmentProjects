@@ -20,12 +20,16 @@ router.get("/campgrounds", function(req, res){
 
 //Extract name and image from the POST request sent from the form
 //CREATE - Add new campground to database
-router.post("/campgrounds", function(req, res){
+router.post("/campgrounds",isLoggedIn, function(req, res){
     //get data from form and add to campgrounds array
     var name = req.body.name;
     var image = req.body.image;
     var desc = req.body.description;
-    var newCampground = {name : name, image : image, description: desc};
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    var newCampground = {name : name, image : image, description: desc, author: author};
     
     //Create and save the new campground submitted by the user to the DB
     Campground.create(newCampground, function(err, newlyCreated){
@@ -40,7 +44,7 @@ router.post("/campgrounds", function(req, res){
 
 //Renders a form to create a new campground
 //NEW - Show form to create new campground
-router.get("/campgrounds/new", function(req, res){
+router.get("/campgrounds/new", isLoggedIn, function(req, res){
    res.render("campgrounds/new"); 
 });
 
@@ -58,5 +62,13 @@ router.get("/campgrounds/:id", function(req, res){
     });
       
 });
+
+//Middleware to check if the user is logged in
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    } 
+    res.redirect("/login");
+}
 
 module.exports = router;
