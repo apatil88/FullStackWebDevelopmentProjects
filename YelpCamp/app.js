@@ -16,7 +16,7 @@ var indexRoutes = require("./routes/index.js");
     
     
 //Everytime this file runs, seed the database
-seedDB();
+//seedDB();
 
 //PASSPORT CONFIGURATION
 app.use(require("express-session")({

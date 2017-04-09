@@ -28,7 +28,7 @@
                 <div class="row">
                     <% campground.comments.forEach(function(comment){ %>
                         <div class="pull-right">10 days ago</div>
-                        <strong><%= comment.author %></strong>
+                        <strong><%= comment.author.username %></strong>
                         <p><%= comment.text %></p>
                     <% }); %>
                 </div>
@@ -38,9 +38,4 @@
     </div>
 </div>
 
-<% campground.comments.forEach(function(comment){ %>
-        <p>
-            <strong><%= comment.author %></strong> - <%= comment.text %>
-        </p>
-<% }); %>
 <% include ../partials/footer %>
