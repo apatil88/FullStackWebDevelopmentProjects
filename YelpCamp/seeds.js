@@ -24,15 +24,15 @@ function seedDB(){
     
     //remove all campgrounds
     Campground.remove({}, function(err){
-        if(err){
+        /*if(err){
             console.log(err);
         } else {
             console.log("removed campgrounds!");
-        }
+        }*/
     });
     
     //add campgrounds
-    data.forEach(function(seed){
+    /*data.forEach(function(seed){
         Campground.create(seed, function(err, campground){
             if(err){
                 console.log(err);
@@ -58,7 +58,7 @@ function seedDB(){
                 });
             }
         });
-    });
+    });*/
     
     //add comments
 }
