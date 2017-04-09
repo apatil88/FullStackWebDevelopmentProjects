@@ -34,6 +34,12 @@ app.set("view engine", "ejs");
 
 app.use(express.static(__dirname+"/public"));  //Serve the public directory for custom stylesheets
 
+//middleware to make current user available on all routes
+app.use(function(req, res, next){
+   res.locals.currentUser = req.user; 
+   next();
+});
+
 app.get("/",  function(req, res){
     res.render("landing");
 });
