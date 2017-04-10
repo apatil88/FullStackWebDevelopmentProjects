@@ -64,20 +64,20 @@ router.get("/campgrounds/:id", function(req, res){
 });
 
 //EDIT CAMPGROUND ROUTE
-router.get("/campgrounds/:id/edit", function(req, res) {
+//Using middleware check if user owns campground
+router.get("/campgrounds/:id/edit", checkCampgroundOwnership, function(req, res) {
     Campground.findById(req.params.id, function(err, foundCampground){
         if(err){
-            console.log(err);
-            res.redirect("/campgrounds");
+           console.log(err);
+           res.redirect("/campgrounds");
         } else {
-           res.render("campgrounds/edit", {campground: foundCampground});  
+           res.render("campgrounds/edit", {campground: foundCampground}); 
         }
-    })
-   
+    });
 });
 
 //UPDATE CAMPGROUND ROUTE
-router.put("/campgrounds/:id", function(req, res){
+router.put("/campgrounds/:id", checkCampgroundOwnership, function(req, res){
     //Find and update campground and redirect to show page
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground){
        if(err){
@@ -90,7 +90,7 @@ router.put("/campgrounds/:id", function(req, res){
 });
 
 //DESTROY CAMPGROUND ROUTE
-router.delete("/campgrounds/:id", function(req, res){
+router.delete("/campgrounds/:id", checkCampgroundOwnership, function(req, res){
     Campground.findByIdAndRemove(req.params.id, function(err){
         if(err){
             console.log(err);
@@ -108,6 +108,29 @@ function isLoggedIn(req, res, next){
         return next();
     } 
     res.redirect("/login");
+}
+
+//Middleware to check campground ownership
+function checkCampgroundOwnership(req, res, next){
+    //If user is logged in 
+    if(req.isAuthenticated()){
+        Campground.findById(req.params.id, function(err, foundCampground){
+            if(err){
+                console.log(err);
+                res.redirect("back"); 
+            } else {
+                //If user owns the campground
+                if(foundCampground.author.id.equals(req.user._id)){
+                   next();  //render edit form
+                } else {
+                    res.redirect("back"); //if user is not authorized to edit, redirect to previous page
+                }
+                
+            }
+        });
+    } else {
+        res.redirect("back");  //If the user is not logged in
+    }
 }
 
 module.exports = router;
