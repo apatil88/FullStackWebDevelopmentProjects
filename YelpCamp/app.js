@@ -43,7 +43,7 @@ app.use(express.static(__dirname+"/public"));  //Serve the public directory for 
 
 app.use(methodOverride("_method"));
 
-//middleware to make current user available on all routes
+//middleware to make current user available on all routes and templates
 app.use(function(req, res, next){
    res.locals.currentUser = req.user; 
    next();
