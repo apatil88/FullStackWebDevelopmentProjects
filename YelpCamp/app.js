@@ -2,6 +2,7 @@ var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
+    flash       = require("connect-flash"),
     passport    = require("passport"),
     LocalStrategy = require("passport-local"),
     methodOverride = require("method-override"),
@@ -18,6 +19,9 @@ var indexRoutes = require("./routes/index.js");
     
 //Everytime this file runs, seed the database
 //seedDB();
+
+//Flash messages
+app.use(flash());
 
 //PASSPORT CONFIGURATION
 app.use(require("express-session")({
@@ -42,6 +46,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname+"/public"));  //Serve the public directory for custom stylesheets
 
 app.use(methodOverride("_method"));
+
 
 //middleware to make current user available on all routes and templates
 app.use(function(req, res, next){
