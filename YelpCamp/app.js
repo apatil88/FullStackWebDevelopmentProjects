@@ -50,7 +50,10 @@ app.use(methodOverride("_method"));
 
 //middleware to make current user available on all routes and templates
 app.use(function(req, res, next){
+    //Make this available in the header template
    res.locals.currentUser = req.user; 
+   res.locals.error = req.flash("error");
+   res.locals.success = req.flash("success");
    next();
 });
 

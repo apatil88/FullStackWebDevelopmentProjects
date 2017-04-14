@@ -22,17 +22,19 @@ router.post("/register", function(req, res){
    User.register(newUser, req.body.password, function(err, user){
        if(err){
            console.log(err);
+           req.flash("error", err.message);  //err coming from passport. Eg. username cannot be blank, password cannot be blank, username already taken
            return res.render("register");
        }
        passport.authenticate("local")(req, res, function(){
+           req.flash("success", "Welcome to YelpCamp, " + user.username);
            res.redirect("/campgrounds");
        });
-   })
+   });
 });
 
 //show login form
 router.get("/login", function(req, res){
-    res.render("login", { message: req.flash("error") });
+    res.render("login");
 });
 
 //handle login logic using a middleware
@@ -43,17 +45,10 @@ router.post("/login", passport.authenticate("local", {
     
 });
 
-//Middleware to check if the user is logged in
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    } 
-    res.redirect("/login");
-}
-
 //logout route
 router.get("/logout", function(req, res){
     req.logout();
+    req.flash("success", "You logged out");
     res.redirect("/campgrounds");
 });
 
