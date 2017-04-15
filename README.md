@@ -11,7 +11,7 @@ Simple blog app architected using RESTful routes
 
 *YelpCamp*
 
-**Environment:** HTML, CSS, JavaScript, Bootstrap, NodeJS, Embedded JavaScript, Express.js, REST, Mongoose, MongoDB, Passport
+**Environment:** HTML, CSS, JavaScript, Bootstrap, NodeJS, Embedded JavaScript, Express.js, RESTful Routes, Mongoose, MongoDB, Passport
 
 **Tools:** Cloud9, Heroku
 
