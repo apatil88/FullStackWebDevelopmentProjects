@@ -14,5 +14,3 @@ Simple blog app architected using RESTful routes
 **Environment:** HTML, CSS, JavaScript, Bootstrap, NodeJS, Embedded JavaScript, Express.js, RESTful Routes, Mongoose, MongoDB, Passport
 
 **Tools:** Cloud9, Heroku
-
-**Live Application URL:** http://frozen-fjord-68657.herokuapp.com/
